@@ -50,13 +50,6 @@ class App
 	}
 
 
-	public function notFound()
-	{
-		header('HTTP/1.0 404 Not Found');
-		header('Location: index.php?p=404');
-	}
-
-
 	public function getTitle()
 	{
 		return $this->title;

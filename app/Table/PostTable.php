@@ -19,10 +19,11 @@ class PostTable extends Table
 			SELECT articles.id, articles.titre, articles.contenu, categories.titre as categorie
 			FROM articles
 			LEFT JOIN categories
-				ON categorie_id = categories.id
+				ON category_id = categories.id
 			ORDER BY articles.date DESC
 		");
 	}
+
 
 
 	/**
@@ -30,13 +31,13 @@ class PostTable extends Table
 	 * @param $id int -> id de l'article
 	 * @return \App\Entity\PostEntity
 	 */
-	public function find($id)
+	public function findWithCategory($id)
 	{
 		return $this->query("
-			SELECT articles.id, articles.titre, articles.contenu, categories.titre as categorie
+			SELECT articles.id, articles.titre, articles.contenu, articles.date, articles.category_id, categories.titre as categorie
 			FROM articles
 			LEFT JOIN categories
-				ON categorie_id = categories.id
+				ON category_id = categories.id
 			WHERE articles.id = ?
 		", [$id], true);
 	}
@@ -53,8 +54,8 @@ class PostTable extends Table
 			SELECT articles.id, articles.titre, articles.contenu, categories.titre as categorie
 			FROM articles
 			LEFT JOIN categories
-				ON categorie_id = categories.id
-			WHERE categorie_id = ?
+				ON category_id = categories.id
+			WHERE category_id = ?
 			ORDER BY articles.date DESC
 		", [$category_id]);
 	}

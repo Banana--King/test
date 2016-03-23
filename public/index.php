@@ -1,4 +1,5 @@
 <?php
+
 define('ROOT', dirname(__DIR__));
 require ROOT . '/app/App.php';
 App::load();
@@ -6,17 +7,18 @@ App::load();
 if(isset($_GET['p'])){
 	$p = $_GET['p'];
 } else {
-	$p = 'home';
+	$p = 'posts.index';
 }
 
-ob_start();
-if ($p === 'home') {
-	require ROOT . '/pages/posts/home.php';
-} elseif($p === "posts.show") {
-	require ROOT . '/pages/posts/show.php';
-} elseif($p === "posts.category") {
-	require ROOT . '/pages/posts/categorie.php';
-}
-$content = ob_get_clean();
+$page = explode('.', $p);
 
-require ROOT . '/pages/templates/default.php';
+if($page[0] === 'admin'){
+	$controller = '\App\Controller\Admin\\' . ucfirst($page[1]) . 'Controller';
+	$action = $page[2];
+} else {
+	$controller = '\App\Controller\\' . ucfirst($page[0]) . 'Controller';
+	$action = $page[1];
+}
+
+$controller = new $controller();	
+$controller->$action();
